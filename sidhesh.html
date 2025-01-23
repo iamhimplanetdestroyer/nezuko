@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Girlfriend?</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="question-container">
+            <p class="question" id="question-1"></p>
+            <p class="question" id="question-2" style="display: none;"></p>
+            <p class="question" id="question-3" style="display: none;"></p>
+
+            <div class="options" style="display: none;">
+                <button class="option" onclick="answer('Yes! I would love to!')">Yes</button>
+                <button class="option" onclick="answer('Yes! Of course!')">Yes</button>
+            </div>
+
+            <p class="response" id="response"></p>
+        </div>
+    </div>
+
+    <script>
+        // Delay and typing effect for each question
+        function typeQuestion(elementId, text, delay, callback) {
+            let i = 0;
+            const questionElement = document.getElementById(elementId);
+            questionElement.style.opacity = "1"; // Make the question element visible
+            questionElement.innerHTML = "";
+            const typingInterval = setInterval(() => {
+                questionElement.innerHTML += text.charAt(i);
+                i++;
+                if (i === text.length) {
+                    clearInterval(typingInterval);
+                    if (callback) callback();
+                }
+            }, 100);
+
+        }
+
+        setTimeout(() => {
+            typeQuestion("question-1", "Hey, how are you?", 500, () => {
+                setTimeout(() => {
+                    document.getElementById("question-1").style.opacity = "0.7";
+                    document.getElementById("question-2").style.display = "block";
+                    typeQuestion("question-2", "I have a question to ask...", 1000, () => {
+                        setTimeout(() => {
+                            document.getElementById("question-2").style.opacity = "0.7";
+                            document.getElementById("question-3").style.display = "block";
+                            typeQuestion("question-3", "Will you be my girlfriend?", 1000, () => {
+                                setTimeout(() => {
+                                    document.querySelector(".options").style.display = "block";
+                                }, 500);
+                            });
+                        }, 1000);
+                    });
+                }, 2000);
+            });
+        }, 500);
+
+        // Handle button click response
+        function answer(text) {
+            document.getElementById("response").textContent = text;
+            document.getElementById("response").style.animation = "fadeIn 2s forwards";
+        }
+    </script>
+</body>
+</html>
